@@ -4,11 +4,18 @@ FROM node:14
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json to the container
-#COPY package*.json ./
-
-# Install application dependencies
-RUN npm install
+# Create or generate the package.json file
+RUN echo '{' \
+    '"name": "my-app",' \
+    '"version": "1.0.0",' \
+    '"description": "My Dockerized Node.js App",' \
+    '"main": "app.js",' \
+    '"scripts": {' \
+        '"start": "node app.js"' \
+    '},' \
+    '"author": "Your Name",' \
+    '"license": "MIT"' \
+    '}' > package.json
 
 # Copy the rest of the application source code to the container
 COPY . .
@@ -17,5 +24,4 @@ COPY . .
 EXPOSE 3000
 
 # Define the command to run your application
-#CMD ["node", "app.js"]
-
+CMD ["node", "app.js"]
